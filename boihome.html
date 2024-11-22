@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliance BOI</title>
+  <style>
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding-top: 84px;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured all font is "Segoe UI", helvetica, sans-serif */
+      overflow-x: hidden; /* Added to prevent horizontal overflow */
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .header {
+      background-color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 5%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%; /* Added to ensure the header doesn't exceed the viewport width */
+      transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+    }
+    .header.scrolled {
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added to mimic Apple's header effect */
+    }
+    .header img {
+      height: 72px;
+    }
+    .header .button {
+      background-color: #EB4C2B;
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 100px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      font-family: "Segoe UI", helvetica, sans-serif;
+      transition: all 0.3s ease;
+      display: inline-block;
+      white-space: nowrap;
+      box-shadow: 0 2px 4px rgba(235, 76, 43, 0.2);
+    }
+    .header .button:hover {
+      transform: scale(1.05); /* Added to make the button grow on hover */
+    }
+    .hero-section {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 50px 20px;
+      width: 100%;
+      box-sizing: border-box;
+      max-width: 100%; /* Added to ensure the hero section doesn't exceed the viewport width */
+    }
+    .hero-section h1 {
+      font-size: 48px;
+      color: #001944;
+      margin-bottom: 30px;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .hero-section h1 span {
+      color: #EB4C2B;
+    }
+    .hero-section p {
+      font-size: 24px;
+      color: #333;
+      margin: 20px auto;
+      max-width: 800px; /* Adjusted to ensure the paragraph doesn't exceed the viewport width */
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .hero-section p span.attention {
+      color: #EB4C2B;
+    }
+    .hero-section p span.navy {
+      color: #001944;
+    }
+    .hero-section button {
+      background-color: #EB4C2B;
+      color: #fff;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 30px;
+      font-size: 24px;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin: 20px 0;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+      transition: all 0.3s ease; /* Added to make the button grow on hover */
+    }
+    .hero-section button:hover {
+      transform: scale(1.05); /* Added to make the button grow on hover */
+    }
+    .pricing-section {
+      position: relative;
+      margin-top: 100px;
+      padding: 100px 20px;
+      background-color: #001944;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      max-width: 100%; /* Added to ensure the pricing section doesn't exceed the viewport width */
+      flex-wrap: wrap;
+      box-sizing: border-box;
+    }
+    .pricing-section::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: scaleX(1.5) translateX(-50%);
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(to bottom left, transparent 49%, #001944 50%);
+      border-radius: 100% 100% 0 0;
+      overflow: hidden;
+    }
+    .pricing-card {
+      background-color: #ffffff;
+      color: #001944;
+      border-radius: 20px;
+      padding: 30px;
+      width: 300px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .pricing-card h2 {
+      font-size: 36px;
+      margin: 10px 0;
+    }
+    .pricing-card ul {
+      list-style: none;
+      padding: 0;
+    }
+    .pricing-card li {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    .pricing-card button {
+      width: 100%;
+      background-color: #001944;
+      color: #fff;
+      border: none;
+      padding: 15px 0;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .pricing-card.popular {
+      position: relative;
+    }
+    .pricing-card.popular::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #001944;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 15px;
+      font-size: 14px;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .pricing-card.popular button {
+      background-color: #EB4C2B;
+    }
+    .faq-section {
+      padding: 50px 20px;
+      text-align: center;
+      max-width: 100%; /* Added to ensure the FAQ section doesn't exceed the viewport width */
+    }
+    .faq-section h2 {
+      font-size: 28px;
+      color: #001944;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .faq-section ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    .faq-section li {
+      font-size: 18px;
+      margin: 10px 0;
+      cursor: pointer;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .pricing-section::after {
+      content: 'Prefer to speak to an attorney? Contact Us';
+      display: block;
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #ffffff;
+      font-size: 18px;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .pricing-section::after a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    .header-curve {
+      background-color: #001944;
+      clip-path: path('M0,20 C150,20 150,0 300,0 C450,0 450,20 600,20 L600,100 L0,100 Z');
+      height: 100px;
+      width: 100%;
+      position: relative;
+    }
+    .header-right {
+      display: inline-block;
+    }
+    .header .button {
+      display: inline-block;
+      width: auto;
+      min-width: min-content;
+    }
+    .survey-section {
+      background-color: #f4f4f4;
+      padding: 100px 20px; /* Increased padding to make the section taller */
+      text-align: center;
+      max-width: 100%; /* Added to ensure the survey section doesn't exceed the viewport width */
+    }
+    .survey-section h2 {
+      font-size: 28px;
+      color: #001944;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .survey-section ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    .survey-section li {
+      font-size: 18px;
+      margin: 10px 0;
+      cursor: pointer;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+    .footer {
+      background-color: #001944;
+      color: #ffffff;
+      padding: 20px;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    .footer p {
+      color: #ffffff;
+      text-align: center;
+      margin: 0;
+      font-size: 14px; /* Reduced the font size of the footer text */
+    }
+    .footer .copyright {
+      flex: 1;
+    }
+    .footer .disclaimer {
+      flex: 2;
+    }
+    .footer .contact {
+      flex: 1;
+    }
+    @media screen and (max-width: 768px) {
+      .pricing-card {
+        width: 90%;
+        margin: 10px auto;
+      }
+      
+      .header {
+        padding: 16px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <a href="https://www.complianceboi.com"><img src="/Users/malachihernandez/Downloads/compliance-boi-logo.png" alt="Compliance BOI Logo"></a>
+    <div class="header-right">
+      <a href="#hero-section" class="button">File my BOI report now</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <h1>Only <span id="days-left">10</span> Days Left to File</h1>
+    <script>
+      // Function to calculate days left until January 1, 2025
+      function calculateDaysLeft() {
+        const today = new Date(); // Get the current date and time
+        const targetDate = new Date('January 1, 2025 00:00:00'); // Target date
+        const timeDiff = targetDate - today; // Difference in milliseconds
+        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert to days
+        return daysLeft >= 0 ? daysLeft : 0; // Return 0 if the date has passed
+      }
+
+      // Update the span element with the calculated days left
+      document.getElementById('days-left').innerText = calculateDaysLeft();
+    </script>
+    <p style="font-weight: bold; color: #001944;"><span style="color: #EB4C2B;">Attention</span> Small Business Owners, New <span style="color: #EB4C2B;">Federal Reports</span> Are <span style="color: #EB4C2B;">Due For Your Business</span>. Let Compliance BOI take care of it for you.</p>
+    <button style="font-weight: bold;">FILE NOW</button>
+    <p style="font-size: 12px;"><a href="#survey-section" style="color: #333; text-decoration: none;" onclick="smoothScroll('#survey-section')">Do I need to file a BOI report?</a></p>
+  </div>
+
+  <!-- Pricing Section -->
+  <div class="pricing-section">
+    <div class="pricing-card">
+      <h2>$149</h2>
+      <p>Per Year</p>
+      <ul>
+        <li>Unlimited Amendments</li>
+        <li>Easily Identify Beneficial Owners</li>
+        <li>Automatically Collect and Submit Report</li>
+        <li>Stress-Free Filing For Your Business</li>
+      </ul>
+      <button>File Now</button>
+    </div>
+    <div class="pricing-card" style="border: 2px solid #EB4C2B;">
+      <h2>$349</h2>
+      <p>Initial BOI Filing</p>
+      <ul>
+        <li>Easily Identify Beneficial Owners</li>
+        <li>Automatically Collect and Submit Report</li>
+        <li>Stress-Free Filing For Your Business</li>
+        <li>Secure Portal</li>
+      </ul>
+      <button style="transition: transform 0.3s ease; transform: scale(1.05);" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" >File Now</button>
+    </div>
+    <div class="pricing-card">
+      <h2>$299</h2>
+      <p>Per Entity</p>
+      <ul>
+        <li>Multiple Entity Filings</li>
+        <li>Easily Identify Beneficial Owners</li>
+        <li>Automatically Collect and Submit Report</li>
+        <li>Stress-Free Filing For Your Business</li>
+      </ul>
+      <button>File Now</button>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <ul>
+      <li>+ Do I need to file a BOI</li>
+      <li>+ Do I need to file a BOI</li>
+      <li>+ Do I need to file a BOI</li>
+      <li>+ Do I need to file a BOI</li>
+      <li>+ Do I need to file a BOI</li>
+    </ul>
+  </div>
+
+  <!-- Survey Section -->
+  <div class="survey-section">
+    <iframe width="50%" frameborder="0" allowtransparency="true" src="https://www.surveymonkey.com/r/NMHHCD9?embedded=1" style="height: 2000px;"></iframe>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p class="copyright">Copyright © 2024 Compliance BOI - All Rights Reserved.</p>
+    <p class="disclaimer">Compliance BOI is not a law firm. The information on this website is not intended to be and is not legal advice.</p>
+    <div class="contact">
+      <a href="https://www.complianceboi.com/about/privacy.php">Privacy Policy</a> | <a href="https://www.complianceboi.com/about/contact-us.php">Contact Us</a>
+    </div>
+  </div>
+</body>
+</html>
