@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliance BOI</title>
+  <style>
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding-top: 84px;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured all font is "Segoe UI", helvetica, sans-serif */
+      overflow-x: hidden; /* Added to prevent horizontal overflow */
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .header {
+      background-color: #ffffff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 5%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%; /* Added to ensure the header doesn't exceed the viewport width */
+      transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+    }
+
+    .header.scrolled {
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added to mimic Apple's header effect */
+    }
+
+    .header img {
+      height: 72px;
+    }
+
+    .header .button {
+      background-color: #EB4C2B;
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 100px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      font-family: "Segoe UI", helvetica, sans-serif;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      box-shadow: 0 2px 4px rgba(235, 76, 43, 0.2);
+    }
+
+    .header .button:hover {
+      transform: scale(1.05); /* Added to make the button grow on hover */
+    }
+
+    .hero-section {
+      display: grid;
+      place-items: center;
+      background-color: #ffffff;
+      padding: 50px 20px;
+      width: 100%;
+      box-sizing: border-box;
+      max-width: 100%; /* Added to ensure the hero section doesn't exceed the viewport width */
+    }
+
+    .hero-section h1 {
+      font-size: 48px;
+      color: #001944;
+      margin-bottom: 30px;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+
+    .hero-section h1 span {
+      color: #EB4C2B;
+    }
+
+    .hero-section p {
+      font-size: 24px;
+      color: #333;
+      margin: 20px auto;
+      max-width: 800px; /* Adjusted to ensure the paragraph doesn't exceed the viewport width */
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+
+    .hero-section p span.attention {
+      color: #EB4C2B;
+    }
+
+    .hero-section p span.navy {
+      color: #001944;
+    }
+
+    .hero-section button {
+      background-color: #EB4C2B;
+      color: #fff;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 30px;
+      font-size: 24px;
+      cursor: pointer;
+      text-transform: uppercase;
+      margin: 20px 0;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+      transition: all 0.3s ease; /* Added to make the button grow on hover */
+    }
+
+    .hero-section button:hover {
+      transform: scale(1.05); /* Added to make the button grow on hover */
+    }
+
+    .pricing-section {
+      position: relative;
+      margin-top: 100px; /* Increased top margin for more space */
+      padding: 150px 100px; /* Increased padding for more height */
+      background-color: #001944;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      max-width: 100%; /* Added to ensure the pricing section doesn't exceed the viewport width */
+      flex-wrap: wrap;
+      box-sizing: border-box;
+      /* Adjusted to use Flexbox for responsive layout */
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 20px;
+      }
+    }
+
+    .pricing-section::before {
+      content: '';
+      position: absolute;
+      top: 0; /* Changed to position at the top of the pricing section */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 120px; /* Increased to make the curve more pronounced */
+      background: linear-gradient(to bottom, #ffffff, #001944); /* Gradient from white to dark blue */
+      border-radius: 0; /* Remove the curve */
+      overflow: hidden;
+    }
+
+    .pricing-card {
+      background-color: #ffffff;
+      color: #001944;
+      border-radius: 20px;
+      padding: 30px;
+      width: 300px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      font-family: "Segoe UI", helvetica, sans-serif;
+      position: relative;
+      transition: transform 0.3s ease;
+      border: 1px solid #F9D949;
+    }
+
+    .pricing-card:hover {
+      transform: none; /* No scaling on hover */
+    }
+
+    .pricing-card.popular {
+      border: 2px solid #F9D949;
+    }
+
+    .pricing-card.popular::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #F9D949;
+      color: #001944;
+      padding: 5px 15px;
+      border-radius: 15px;
+      font-size: 14px;
+      font-family: "Segoe UI", helvetica, sans-serif;
+    }
+
+    .pricing-card button {
+      width: 100%;
+      background-color: #EB4C2B;
+      color: #fff;
+      border: none;
+      padding: 15px 0;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      font-family: "Segoe UI", helvetica, sans-serif;
+      transition: transform 0.3s ease; /* Added transition for smoother scaling */
+    }
+
+    .pricing-card button:hover {
+      transform: scale(1.05); /* Only buttons grow on hover */
+    }
+
+    .faq-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .faq-item {
+      margin-bottom: 20px;
+    }
+
+    .faq-answer {
+      max-height: 0; /* Start with max-height of 0 */
+      overflow: hidden; /* Hide overflow */
+      transition: max-height 0.5s ease, opacity 0.5s ease; /* Smooth transition */
+      opacity: 0; /* Start hidden */
+    }
+
+    .faq-answer.show {
+      opacity: 1; /* Make visible */
+    }
+
+    .faq-question {
+      cursor: pointer; /* Keep the pointer cursor */
+      color: #000; /* Black text */
+      font-size: 20px; /* Larger text */
+      padding: 10px 0; /* Padding for spacing */
+      position: relative; /* For icon positioning */
+      transition: color 0.3s; /* Smooth color transition */
+      font-weight: normal; /* Unbold the text */
+      display: flex; /* Use flexbox for alignment */
+      justify-content: space-between; /* Space between text and icon */
+      align-items: center; /* Center items vertically */
+    }
+
+    .faq-question .icon {
+      margin-left: 10px; /* Space between text and icon */
+      transition: transform 0.3s, color 0.3s; /* Smooth rotation and color change */
+      color: #000; /* Default icon color */
+      font-size: 24px; /* Standard size for the icon */
+    }
+    .faq-question:hover > .icon {
+      color: #eb4c2b; /* Change icon color to orange on hover */
+    }
+
+    .faq-question:hover {
+      color: #eb4c2b; /* Change text color to orange on hover */
+    }
+
+    .divider {
+      border: none; /* Remove default border */
+      height: 2px; /* Height of the divider */
+      background-color: #eb4c2b; /* Orange color */
+      margin: 10px 0; /* Margin for spacing */
+    }
+
+    .pricing-section::after {
+      content: 'Prefer to speak to an attorney? Contract Us';
+      display: block;
+      position: absolute;
+      bottom: 50px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #ffffff;
+      font-size: 18px;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+
+    .pricing-section::after a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .header-curve {
+      background-color: transparent;
+      height: -60px; /* Reduced height for a smaller curve */
+      width: 150vw;
+      position: relative;
+      margin-top: -10px; /* Adjusted margin-top for a smaller curve */
+      z-index: 0; /* Added to ensure it appears above the blue background */
+    }
+
+    .header-right {
+      display: inline-block;
+    }
+
+    .header .button {
+      display: inline-block;
+      width: auto;
+      min-width: min-content;
+    }
+
+    .survey-section {
+      background-color: #f4f4f4;
+      padding: 100px 20px; /* Increased padding to make the section taller */
+      text-align: center;
+      max-width: 100%; /* Added to ensure the survey section doesn't exceed the viewport width */
+    }
+
+    .survey-section h2 {
+      font-size: 28px;
+      color: #001944;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+
+    .survey-section ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .survey-section li {
+      font-size: 18px;
+      margin: 10px 0;
+      cursor: pointer;
+      font-family: "Segoe UI", helvetica, sans-serif; /* Ensured font family matches the requirement */
+    }
+
+    .footer {
+      background-color: #001944;
+      color: #ffffff;
+      padding: 20px;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+
+    .footer p {
+      color: #ffffff;
+      text-align: center;
+      margin: 0;
+      font-size: 14px; /* Reduced the font size of the footer text */
+    }
+
+    .footer .copyright {
+      flex: 1;
+    }
+
+    .footer .disclaimer {
+      flex: 2;
+    }
+
+    .footer .contact {
+      flex: 1;
+    }
+
+    @media screen and (max-width: 768px) {
+      .pricing-card {
+        width: 90%;
+        margin: 10px auto;
+      }
+      
+      .header {
+        padding: 16px 20px;
+      }
+    }
+
+    /* Add this CSS rule */
+    a {
+      color: #EB4C2B; /* Set link color to orange */
+      text-decoration: underline; /* Optional: underline for better visibility */
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <a href="https://www.complianceboi.com"><img src="/Users/malachihernandez/Downloads/compliance-boi-logo.png" alt="Compliance BOI Logo"></a>
+    <div class="header-right">
+      <a href="#pricing-section" class="button" onclick="smoothScroll('#pricing-section', 1000)">File my BOI report now</a>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <div class="hero-section" id="hero-section">
+    <h1 style="text-align: center;">Only <span id="days-left">10</span> Days Left to File</h1>
+    <script>
+      // Function to calculate days left until January 1, 2025
+      function calculateDaysLeft() {
+        const today = new Date();
+        const targetDate = new Date('January 1, 2025 00:00:00');
+        const timeDiff = targetDate - today;
+        const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+        return daysLeft >= 0 ? daysLeft : 0;
+      }
+
+      // Smooth scroll function
+      function smoothScroll(target, duration) {
+        const targetElement = document.querySelector(target);
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
+
+        function animation(currentTime) {
+          if (startTime === null) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const run = ease(timeElapsed, startPosition, distance, duration);
+          window.scrollTo(0, run);
+          if (timeElapsed < duration) requestAnimationFrame(animation);
+        }
+
+        function ease(t, b, c, d) {
+          t /= d / 2;
+          if (t < 1) return c / 2 * t * t + b;
+          t--;
+          return -c / 2 * (t * (t - 2) - 1) + b;
+        }
+
+        requestAnimationFrame(animation);
+      }
+
+      // Update the span element with the calculated days left
+      document.getElementById('days-left').innerText = calculateDaysLeft();
+    </script>
+    <p style="font-weight: bold; color: #001944; text-align: center;"><span style="color: #EB4C2B;">Attention</span> Small Business Owners, New <span style="color: #EB4C2B;">Federal Reports</span> Are <span style="color: #EB4C2B;">Due For Your Business</span>. Let Compliance BOI take care of it for you.</p>
+    <button style="font-weight: bold;" onclick="smoothScroll('#pricing-section', 1000)">FILE NOW</button>
+    <p style="font-size: 12px;"><a href="#survey-section" style="color: #333; text-decoration: none;" onclick="smoothScroll('#survey-section', 1000)">Do I need to file a BOI report?</a></p>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const header = document.querySelector(".header");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 50) { // Adjust this value as needed
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      });
+    });
+  </script>
+
+  <!-- Pricing Section -->
+  <div class="pricing-section" id="pricing-section">
+    <div class="header-curve">
+      <h2 style="color: white; text-align: center; margin: 0; padding-top: 0px; font-size: 36px;">Our Services</h2>
+    </div>
+    <div class="pricing-card" style="border: 2px solid #EB4C2B;">
+      <div style="background-color: #ffffff; padding: 5px 15px; text-align: center; margin-bottom: 10px;">
+        <span style="color: #001944;">Perfect For 1-5 Reports</span>
+      </div>
+      <h2 style="text-align: center; font-size: 32px;">$349</h2>
+      <p style="text-align: center;">Initial BOI Filing</p>
+      <hr style="border: 1px solid #001944; margin: 10px 0;">
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li style="margin: 5px 0;">Easily Identify Beneficial Owners</li>
+        <li style="margin: 5px 0;">Automatically Collect and Submit Report</li>
+        <li style="margin: 5px 0;">Stress-Free Filing For Your Business</li>
+        <li style="margin: 5px 0;">Secure Portal</li>
+      </ul>
+      <button>File Now</button>
+    </div>
+    <div class="pricing-card" style="border: 2px solid #EB4C2B;">
+      <div style="background-color: #ffffff; padding: 5px 15px; text-align: center; margin-bottom: 10px;">
+        <span style="color: #001944;">For 5+ Reports</span>
+      </div>
+      <h2 style="text-align: center; font-size: 32px;">$299</h2>
+      <p style="text-align: center;">Per Entity</p>
+      <hr style="border: 1px solid #001944; margin: 10px 0;">
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li style="margin: 5px 0;">Multiple Entity Filings</li>
+        <li style="margin: 5px 0;">Easily Identify Beneficial Owners</li>
+        <li style="margin: 5px 0;">Automatically Collect and Submit Report</li>
+        <li style="margin: 5px 0;">Stress-Free Filing For Your Business</li>
+      </ul>
+      <button>File Now</button>
+    </div>
+    <div class="pricing-card" style="border: 2px solid #EB4C2B;">
+      <div style="background-color: #ffffff; padding: 5px 15px; text-align: center; margin-bottom: 10px;">
+        <span style="color: #001944;">Best For Refiling</span>
+      </div>
+      <h2 style="text-align: center; font-size: 32px;">$149</h2>
+      <p style="text-align: center;">Per Year</p>
+      <hr style="border: 1px solid #001944; margin: 10px 0;">
+      <ul style="list-style-type: disc; padding-left: 20px;">
+        <li style="margin: 5px 0;">Unlimited Amendments</li>
+        <li style="margin: 5px 0;">Easily Identify Beneficial Owners</li>
+        <li style="margin: 5px 0;">Automatically Collect and Submit Report</li>
+        <li style="margin: 5px 0;">Stress-Free Filing For Your Business</li>
+      </ul>
+      <button>File Now</button>
+    </div>
+  </div>
+
+  <!-- FAQ Section -->
+  <div class="faq-section" id="faq-section" style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+    <h2 style="font-size: 36px; margin-bottom: 40px; color: #001944; text-align: center;">Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        What is Compliance BOI?
+        <span class="icon">➕</span>
+      </div>
+      <div class="faq-answer">
+        Compliance BOI is a full service, premium filing manager for business owners to easily file and stay up-to-date on all their government required BOI filings. Compliance BOI was built by attorneys and small business owners for small business owners. We offer everything from initial BOI filings for single or multiple entities, as well as management for refiling. Our services are staffed with real, U.S. based specialists ensuring full compliance and quality control. You can easily start your BOI report filing by <a href="#pricing-section" onclick="smoothScroll('#pricing-section', 1000)">clicking here</a>.
+      </div>
+      <hr class="divider">
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        Why is Compliance BOI different?
+        <span class="icon">➕</span>
+      </div>
+      <div class="faq-answer">
+        Compliance BOI is the only solution with SmartFile technology. We ensure full compliance, and provide you with the tools to seamlessly file your report. We cut hours of work and regulations and allow you to file in minutes.
+      </div>
+      <hr class="divider">
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        What is a Beneficial Ownership Information report?
+        <span class="icon">➕</span>
+      </div>
+      <div class="faq-answer">
+        A FINCEN BOI (Beneficial Ownership Information) report is a document that certain U.S. businesses must file with the Financial Crimes Enforcement Network (FINCEN). It lists the individuals who own or control the business (called beneficial owners) to increase transparency and help fight financial crimes like money laundering. Most U.S. businesses are required to file a BOI by January 1, 2025 or within 90 days of starting.
+      </div>
+      <hr class="divider">
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        Do I have to file a BOI report for my business?
+        <span class="icon">➕</span>
+      </div>
+      <div class="faq-answer">
+        Most U.S. businesses are required to file a BOI by January 1, 2025 or within 90 days of starting. Additionally, if any BOI information changes after the last filing, businesses must refile within 30 days. You can use our <a href="#survey-section" onclick="smoothScroll('#survey-section', 1000)">free assessment</a> to help determine if you need to file.
+      </div>
+      <hr class="divider">
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        How often do I have to file a BOI report?
+        <span class="icon">➕</span>
+      </div>
+      <div class="faq-answer">
+        Businesses created before the 2024 calendar year must file by January 1, 2025. Any other new business must file within 90 days of filing with their secretary of state. Additionally, if any BOI information changes after the last filing, businesses must refile within 30 days. You can use our <a href="#survey-section" onclick="smoothScroll('#survey-section', 1000)">free assessment</a> to help determine if you need to file.
+      </div>
+      <hr class="divider">
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        What happens if I don't file a BOI report?
+        <span class="icon">➕</span>
+      </div>
+      <div class="faq-answer">
+        There are heavy penalties for not filing a BOI report. Including daily fines and penalties up to $250,000.
+      </div>
+      <hr class="divider">
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        Does Compliance BOI provide an attorney?
+        <span class="icon">➕</span>
+      </div>
+      <div class="faq-answer">
+        Compliance BOI is not a law firm, and we do not provide legal advice, opinions, or representation. We do however have a network of attorneys who we can refer you to if you desire legal assistance.
+      </div>
+      <hr class="divider">
+    </div>
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleAnswer(this)">
+        What is the Corporate Transparency Act (CTA)?
+        <span class="icon">➕</span>
+      </div>
+      <div class="faq-answer">
+        The Corporate Transparency Act (CTA) is a U.S. law that requires certain businesses to disclose their beneficial owners—the individuals who ultimately own or control the company. This is to increase transparency and combat financial crimes like money laundering and terrorism financing. It is the act that requires businesses to file BOI reports.
+      </div>
+      <hr class="divider">
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Function to toggle the answer visibility
+      window.toggleAnswer = function(questionElement) {
+        const answerElement = questionElement.nextElementSibling;
+        const icon = questionElement.querySelector('.icon');
+
+        // Close all answers except the one being toggled
+        const allAnswers = document.querySelectorAll('.faq-answer');
+        allAnswers.forEach(answer => {
+          if (answer !== answerElement) {
+            answer.style.maxHeight = null; // Reset max-height
+            answer.classList.remove('show');
+            answer.previousElementSibling.querySelector('.icon').textContent = '➕'; // Reset icon to +
+            answer.previousElementSibling.querySelector('.icon').style.transform = 'rotate(0deg)';
+          }
+        });
+
+        // Toggle the clicked answer
+        if (answerElement.classList.contains('show')) {
+          answerElement.style.maxHeight = null; // Collapse
+          answerElement.classList.remove('show');
+          icon.textContent = '➕'; // Change icon to +
+          icon.style.transform = 'rotate(0deg)'; // Reset rotation
+        } else {
+          answerElement.style.maxHeight = answerElement.scrollHeight + "px"; // Expand
+          answerElement.classList.add('show');
+          icon.textContent = '➖'; // Change icon to -
+          icon.style.transform = 'rotate(180deg)'; // Rotate icon on expand
+        }
+      };
+
+      // Initialize all answers to be hidden
+      document.querySelectorAll('.faq-answer').forEach(answer => {
+        answer.style.maxHeight = null; // Ensure all answers are hidden initially
+      });
+    });
+  </script>
+
+  <!-- Survey Section -->
+  <div class="survey-section" id="survey-section">
+    <iframe width="50%" frameborder="0" allowtransparency="true" src="https://www.surveymonkey.com/r/NMHHCD9?embedded=1" style="height: 2000px;"></iframe>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p class="copyright">Copyright © 2024 Compliance BOI - All Rights Reserved.</p>
+    <p class="disclaimer">Compliance BOI is not a law firm. The information on this website is not intended to be and is not legal advice.</p>
+    <div class="contact">
+      <a href="https://www.complianceboi.com/about/privacy.php">Privacy Policy</a> | <a href="https://www.complianceboi.com/about/contact-us.php">Contact Us</a>
+    </div>
+  </div>
+</body>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  var stripe = Stripe('your_public_key');
+</script>
+<script>
+  // Add this script to reload the page to the top on refresh
+  window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  }
+</script>
+</html>
